@@ -10,6 +10,25 @@ const Dashboard = () => {
     theme, toggleTheme
   } = useCalculation();
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [installPrompt, setInstallPrompt] = React.useState(null);
+
+  React.useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setInstallPrompt(null);
+    }
+  };
 
   const filteredSessions = sessions.filter(s => 
     (s.title || '').toLowerCase().includes(searchTerm.toLowerCase())
@@ -23,6 +42,11 @@ const Dashboard = () => {
           <h2>Sumly</h2>
         </div>
         <div style={{display: 'flex', gap: '0.5rem'}}>
+          {installPrompt && (
+            <button onClick={handleInstallClick} className="icon-btn" title="Instalar App" style={{color: 'var(--md-sys-color-primary)', background: 'transparent', padding: '0.5rem', borderRadius: '50%'}}>
+              <Download size={20} />
+            </button>
+          )}
           <button onClick={toggleTheme} className="icon-btn" title="Cambiar tema" style={{color: 'var(--md-sys-color-on-surface)', background: 'transparent', padding: '0.5rem', borderRadius: '50%'}}>
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>

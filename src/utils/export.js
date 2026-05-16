@@ -55,21 +55,38 @@ export const handleShare = async (session) => {
   }
 };
 
-export const handleDownload = (session) => {
+export const handleDownload = async (session) => {
   if (!session) return;
   const text = formatReceiptText(session);
-  
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
   
   const rawTitle = session.title || 'Lista';
   const cleanTitle = rawTitle.replace(/[^a-zA-Z0-9]/g, '_');
   const filename = `Sumly_${cleanTitle}.txt`;
+
+  if (window.showSaveFilePicker) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [{ description: 'Text File', accept: {'text/plain': ['.txt']} }],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(text);
+      await writable.close();
+      return;
+    } catch (err) {
+      if (err.name !== 'AbortError') console.error(err);
+      return; // If aborted, stop. If error, maybe fallback, but usually better to stop.
+    }
+  }
   
+  const file = new File([text], filename, { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(file);
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
   a.download = filename;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
   
   document.body.appendChild(a);
   a.click();
@@ -80,7 +97,7 @@ export const handleDownload = (session) => {
   }, 2000);
 };
 
-export const handleExportToSheets = (session) => {
+export const handleExportToSheets = async (session) => {
   if (!session) return;
   let csv = '\uFEFFOperador,Monto,Etiqueta\n';
   session.items?.forEach(item => {
@@ -89,17 +106,34 @@ export const handleExportToSheets = (session) => {
   });
   csv += `,"${session.total}","TOTAL"\n`;
   
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  
   const rawTitle = session.title || 'Lista';
   const cleanTitle = rawTitle.replace(/[^a-zA-Z0-9]/g, '_');
   const filename = `Sumly_${cleanTitle}_Sheets.csv`;
+
+  if (window.showSaveFilePicker) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [{ description: 'CSV File', accept: {'text/csv': ['.csv']} }],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(csv);
+      await writable.close();
+      return;
+    } catch (err) {
+      if (err.name !== 'AbortError') console.error(err);
+      return;
+    }
+  }
   
+  const file = new File([csv], filename, { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(file);
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
   a.download = filename;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
   
   document.body.appendChild(a);
   a.click();

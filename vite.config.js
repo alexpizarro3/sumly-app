@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['sumly_icon.png'],
+      includeAssets: ['sumly_icon.png', 'icon-192.png', 'icon-512.png'],
       manifest: {
         name: 'Sumly',
         short_name: 'Sumly',
@@ -17,14 +17,16 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: 'sumly_icon.png',
+            src: 'icon-192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any maskable'
           },
           {
-            src: 'sumly_icon.png',
+            src: 'icon-512.png',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any maskable'
           }
         ]
       }

@@ -48,9 +48,23 @@ const Dashboard = () => {
           </div>
         </div>
         {filteredSessions.length === 0 ? (
-          <div className="empty-state">
-            <p>No tienes listas guardadas.</p>
-            <p>¡Crea una nueva para empezar!</p>
+          <div className="empty-state" style={{marginTop: '2rem'}}>
+            <div className="hero-logo-container" style={{margin: '0 auto 1.5rem auto', width: '80px', height: '80px'}}>
+              <img src="/sumly_icon.png" alt="Sumly Logo" className="hero-logo pulse-anim" />
+            </div>
+            <div className="hero-mock-app" style={{textAlign: 'left', marginBottom: '2rem'}}>
+              <div className="mock-row fade-in-1">
+                <span className="mock-op">+</span>
+                <span className="mock-amount">$4.50</span>
+                <span className="mock-tag">Café</span>
+              </div>
+              <div className="mock-row fade-in-2">
+                <span className="mock-op">+</span>
+                <span className="mock-amount">$12.00</span>
+                <span className="mock-tag">Uber🚕</span>
+              </div>
+            </div>
+            <p style={{color: 'var(--md-sys-color-on-surface-variant)'}}>Toca <strong>+ Nueva</strong> para empezar a sumar.</p>
           </div>
         ) : (
           <div className="sessions-list">

@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Material 3 / Stitch Premium Palette */
+  --md-sys-color-background: #0B0C10;
+  --md-sys-color-surface: #15171E;
+  --md-sys-color-surface-variant: #1F222B;
+  
+  --md-sys-color-on-background: #F8FAFC;
+  --md-sys-color-on-surface: #F1F5F9;
+  --md-sys-color-on-surface-variant: #94A3B8;
+  
+  --md-sys-color-primary: #93C5FD;
+  --md-sys-color-on-primary: #1E3A8A;
+  --md-sys-color-primary-container: #1E3A8A;
+  --md-sys-color-on-primary-container: #DBEAFE;
+
+  --md-sys-color-secondary: #10B981; 
+  --md-sys-color-on-secondary: #022C22;
+  --md-sys-color-secondary-container: #065F46;
+  --md-sys-color-on-secondary-container: #A7F3D0;
+  
+  --md-sys-color-error: #FCA5A5;
+  --md-sys-color-on-error: #7F1D1D;
+
+  --md-sys-color-outline: #475569;
+  
+  /* Radii */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+  --radius-full: 9999px;
+
+  /* Elevations */
+  --elevation-1: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --elevation-2: 0 10px 24px rgba(0, 0, 0, 0.3);
+
+  /* Transitions */
+  --transition-fast: 0.1s cubic-bezier(0.2, 0, 0, 1);
+  --transition-normal: 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+
+[data-theme="light"] {
+  --md-sys-color-background: #F1F5F9;
+  --md-sys-color-surface: #FFFFFF;
+  --md-sys-color-surface-variant: #E2E8F0;
+  
+  --md-sys-color-on-background: #0F172A;
+  --md-sys-color-on-surface: #1E293B;
+  --md-sys-color-on-surface-variant: #475569;
+  
+  --md-sys-color-primary: #2563EB;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #DBEAFE;
+  --md-sys-color-on-primary-container: #1E3A8A;
+
+  --md-sys-color-secondary: #059669; 
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #D1FAE5;
+  --md-sys-color-on-secondary-container: #065F46;
+  
+  --md-sys-color-error: #EF4444;
+  --md-sys-color-on-error: #FFFFFF;
+
+  --md-sys-color-outline: #94A3B8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--md-sys-color-surface);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+[data-theme="light"] .glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: var(--radius-full);
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-in {
+  animation: slideUpFade var(--transition-normal) forwards;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+  transition: transform var(--transition-fast), background var(--transition-fast), filter var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+  transform: scale(0.92);
+}

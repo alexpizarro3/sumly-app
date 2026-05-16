@@ -1,0 +1,279 @@
+.calculator-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.75rem;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+.mobile-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-btn {
+  color: var(--md-sys-color-on-background);
+  padding: 0.6rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.session-title-pill {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.audit-list {
+  flex: 1 1 auto;
+  min-height: 100px;
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.audit-items {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.audit-empty {
+  color: var(--md-sys-color-outline);
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 500;
+}
+
+.audit-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.audit-item .operator {
+  width: 24px;
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.audit-item .label {
+  flex: 1;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 1rem;
+  font-weight: 500;
+}
+
+.audit-item .amount {
+  font-family: 'Inter', monospace;
+  font-size: 1.15rem;
+  color: var(--md-sys-color-on-surface);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.running-total {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(255,255,255,0.1);
+  text-align: right;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--md-sys-color-secondary);
+  letter-spacing: -0.02em;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0.5rem 0.5rem 1rem;
+}
+
+.amount-display {
+  display: flex;
+  align-items: baseline;
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--md-sys-color-on-background);
+  line-height: 1;
+  overflow-x: auto;
+  max-width: 100%;
+  letter-spacing: -0.04em;
+}
+
+.amount-display .currency {
+  font-size: 2.25rem;
+  color: var(--md-sys-color-primary);
+  margin-right: 0.5rem;
+  font-weight: 400;
+}
+
+.label-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--md-sys-color-on-surface);
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  outline: none;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all var(--transition-normal);
+  text-align: right;
+}
+
+.label-input::placeholder {
+  color: var(--md-sys-color-outline);
+  opacity: 0.8;
+}
+
+.label-input:focus {
+  border-bottom-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.key {
+  height: 3.6rem;
+  border-radius: var(--radius-full);
+  font-size: 1.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-fast);
+}
+
+.key:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  filter: brightness(1.05);
+}
+
+.key:active {
+  transform: translateY(0) scale(0.95);
+}
+
+.key.number {
+  background: var(--md-sys-color-surface);
+}
+
+.key.operator {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.key.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--md-sys-color-error);
+}
+
+.key.equals {
+  background: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+  grid-row: span 2;
+  height: 100%;
+  border-radius: 999px;
+  font-size: 1.75rem;
+}
+
+.key.zero {
+  grid-column: span 2;
+  height: 3.6rem;
+  border-radius: 999px;
+}
+
+@media (min-width: 801px) {
+  .mobile-top-bar .back-btn {
+    display: none;
+  }
+  
+  .calculator-container {
+    max-width: 420px;
+    padding: clamp(0.5rem, 2vh, 1rem);
+    gap: clamp(0.5rem, 2vh, 1rem);
+  }
+
+  .audit-list {
+    padding: clamp(0.75rem, 2vh, 1rem);
+  }
+
+  .input-area {
+    padding: 0.25rem 0.5rem clamp(0.5rem, 2vh, 1rem);
+  }
+
+  .key {
+    height: clamp(2.8rem, 7vh, 4.2rem);
+    font-size: clamp(1.1rem, 2.5vh, 1.5rem);
+  }
+  
+  .key.zero {
+    height: clamp(2.8rem, 7vh, 4.2rem);
+  }
+
+  .key.operator {
+    font-size: clamp(1.3rem, 3vh, 1.8rem);
+  }
+
+  .key.equals {
+    font-size: clamp(1.3rem, 3vh, 1.8rem);
+  }
+
+  .amount-display {
+    font-size: clamp(2.2rem, 6vh, 3.2rem);
+  }
+
+  .amount-display .currency {
+    font-size: clamp(1.5rem, 4vh, 2rem);
+  }
+
+  .label-input {
+    font-size: clamp(1rem, 2vh, 1.2rem);
+    padding: 0.25rem 0;
+    margin-top: 0.25rem;
+  }
+
+  .running-total {
+    font-size: clamp(1.25rem, 3vh, 1.6rem);
+    margin-top: clamp(0.5rem, 1.5vh, 1rem);
+    padding-top: clamp(0.5rem, 1.5vh, 1rem);
+  }
+
+  .audit-item .amount {
+    font-size: clamp(1rem, 2vh, 1.15rem);
+  }
+
+  .audit-item .label {
+    font-size: clamp(0.9rem, 1.8vh, 1rem);
+  }
+}

@@ -77,7 +77,7 @@ export const handleDownload = (session) => {
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  }, 100);
+  }, 2000);
 };
 
 export const handleExportToSheets = (session) => {
@@ -107,5 +107,5 @@ export const handleExportToSheets = (session) => {
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  }, 100);
+  }, 2000);
 };

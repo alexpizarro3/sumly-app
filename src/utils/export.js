@@ -59,9 +59,8 @@ export const handleDownload = (session) => {
   if (!session) return;
   const text = formatReceiptText(session);
   
-  // Use base64 Data URI to prevent PWA Service Worker from intercepting or corrupting the blob
-  const base64Data = btoa(unescape(encodeURIComponent(text)));
-  const dataUri = `data:text/plain;base64,${base64Data}`;
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
   
   const rawTitle = session.title || 'Lista';
   const cleanTitle = rawTitle.replace(/[^a-zA-Z0-9]/g, '_');
@@ -69,7 +68,7 @@ export const handleDownload = (session) => {
   
   const a = document.createElement('a');
   a.style.display = 'none';
-  a.href = dataUri;
+  a.href = url;
   a.download = filename;
   
   document.body.appendChild(a);
@@ -77,6 +76,7 @@ export const handleDownload = (session) => {
   
   setTimeout(() => {
     document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }, 100);
 };
 
@@ -89,8 +89,8 @@ export const handleExportToSheets = (session) => {
   });
   csv += `,"${session.total}","TOTAL"\n`;
   
-  const base64Data = btoa(unescape(encodeURIComponent(csv)));
-  const dataUri = `data:text/csv;base64,${base64Data}`;
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
   
   const rawTitle = session.title || 'Lista';
   const cleanTitle = rawTitle.replace(/[^a-zA-Z0-9]/g, '_');
@@ -98,7 +98,7 @@ export const handleExportToSheets = (session) => {
   
   const a = document.createElement('a');
   a.style.display = 'none';
-  a.href = dataUri;
+  a.href = url;
   a.download = filename;
   
   document.body.appendChild(a);
@@ -106,5 +106,6 @@ export const handleExportToSheets = (session) => {
   
   setTimeout(() => {
     document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }, 100);
 };

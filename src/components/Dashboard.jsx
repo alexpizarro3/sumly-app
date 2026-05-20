@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCalculation } from '../store/CalculationContext';
-import { Plus, ListTodo, ChevronRight, Search, Trash2, Share2, Download, FileSpreadsheet, Sun, Moon, Smartphone } from 'lucide-react';
+import { Plus, ListTodo, ChevronRight, Search, Trash2, Share2, FileDown, FileSpreadsheet, Sun, Moon, Smartphone } from 'lucide-react';
 import { handleShare, handleDownload, handleExportToSheets } from '../utils/export';
 import './Dashboard.css';
 
@@ -116,7 +116,7 @@ const Dashboard = () => {
                     title="Descargar CSV"
                     style={{color: 'var(--md-sys-color-outline)', background: 'transparent'}}
                   >
-                    <Download size={16} />
+                    <FileDown size={16} />
                   </button>
                   <button 
                     className="delete-session-btn"

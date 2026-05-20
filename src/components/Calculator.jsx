@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useCalculation } from '../store/CalculationContext';
-import { Delete, ArrowLeft, Trash2, Check, X, Edit3, Share2, Download, FileSpreadsheet, Home } from 'lucide-react';
+import { Delete, ArrowLeft, Trash2, Check, X, Edit3, Share2, FileDown, FileSpreadsheet, Home } from 'lucide-react';
 import { handleShare, handleDownload, handleExportToSheets } from '../utils/export';
 import './Calculator.css';
 
@@ -142,7 +142,7 @@ const Calculator = () => {
         )}
         <div style={{display: 'flex', gap: '0.2rem'}}>
           <button onClick={() => handleShare(currentSession)} style={{color: 'var(--md-sys-color-on-background)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Compartir"><Share2 size={18} /></button>
-          <button onClick={() => handleDownload(currentSession)} style={{color: 'var(--md-sys-color-on-background)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Descargar TXT"><Download size={18} /></button>
+          <button onClick={() => handleDownload(currentSession)} style={{color: 'var(--md-sys-color-on-background)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Descargar TXT"><FileDown size={18} /></button>
           <button onClick={() => handleExportToSheets(currentSession)} style={{color: 'var(--md-sys-color-secondary)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Google Sheets (CSV)"><FileSpreadsheet size={18} /></button>
         </div>
       </div>

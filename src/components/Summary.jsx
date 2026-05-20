@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCalculation } from '../store/CalculationContext';
-import { ArrowLeft, Edit3, Check, Share2, Download, Trash2, X, FileSpreadsheet } from 'lucide-react';
+import { ArrowLeft, Edit3, Check, Share2, FileDown, Trash2, X, FileSpreadsheet } from 'lucide-react';
 import { handleShare, handleDownload, handleExportToSheets } from '../utils/export';
 import './Summary.css';
 
@@ -45,7 +45,7 @@ const Summary = () => {
         </button>
         <div className="header-actions">
           <button className="icon-btn" title="Compartir texto" onClick={() => handleShare(currentSession)}><Share2 size={20} /></button>
-          <button className="icon-btn" title="Descargar TXT" onClick={() => handleDownload(currentSession)}><Download size={20} /></button>
+          <button className="icon-btn" title="Descargar TXT" onClick={() => handleDownload(currentSession)}><FileDown size={20} /></button>
           <button className="icon-btn" title="Google Sheets (CSV)" onClick={() => handleExportToSheets(currentSession)} style={{color: 'var(--md-sys-color-secondary)'}}><FileSpreadsheet size={20} /></button>
         </div>
       </div>

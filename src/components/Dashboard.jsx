@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCalculation } from '../store/CalculationContext';
-import { Plus, ListTodo, ChevronRight, Search, Trash2, Share2, Download, FileSpreadsheet, Sun, Moon } from 'lucide-react';
+import { Plus, ListTodo, ChevronRight, Search, Trash2, Share2, Download, FileSpreadsheet, Sun, Moon, Smartphone } from 'lucide-react';
 import { handleShare, handleDownload, handleExportToSheets } from '../utils/export';
 import './Dashboard.css';
 
@@ -43,8 +43,9 @@ const Dashboard = () => {
         </div>
         <div style={{display: 'flex', gap: '0.5rem'}}>
           {installPrompt && (
-            <button onClick={handleInstallClick} className="icon-btn" title="Instalar App" style={{color: 'var(--md-sys-color-primary)', background: 'transparent', padding: '0.5rem', borderRadius: '50%'}}>
-              <Download size={20} />
+            <button onClick={handleInstallClick} className="install-btn" title="Instalar App" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--md-sys-color-secondary-container)', color: 'var(--md-sys-color-on-secondary-container)', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontWeight: 600, fontSize: '0.9rem', boxShadow: 'var(--elevation-1)', border: 'none', cursor: 'pointer' }}>
+              <Smartphone size={18} />
+              <span className="install-text">Instalar</span>
             </button>
           )}
           <button onClick={toggleTheme} className="icon-btn" title="Cambiar tema" style={{color: 'var(--md-sys-color-on-surface)', background: 'transparent', padding: '0.5rem', borderRadius: '50%'}}>

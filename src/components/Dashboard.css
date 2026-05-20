@@ -47,6 +47,22 @@ h2 {
   box-shadow: var(--elevation-2);
 }
 
+.install-btn {
+  transition: all var(--transition-fast);
+}
+
+.install-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--elevation-2);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 400px) {
+  .install-text {
+    display: none;
+  }
+}
+
 .dashboard-content {
   flex: 1;
   padding: 0 1.5rem 1.5rem;

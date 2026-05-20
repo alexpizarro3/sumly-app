@@ -7,19 +7,9 @@ import './Dashboard.css';
 const Dashboard = () => {
   const { 
     sessions, startNewSession, loadSession, deleteSession,
-    theme, toggleTheme
+    theme, toggleTheme, installPrompt, setInstallPrompt
   } = useCalculation();
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [installPrompt, setInstallPrompt] = React.useState(null);
-
-  React.useEffect(() => {
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setInstallPrompt(e);
-    };
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-  }, []);
 
   const handleInstallClick = async () => {
     if (!installPrompt) return;

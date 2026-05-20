@@ -19,6 +19,16 @@ export const CalculationProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark';
   });
+  const [installPrompt, setInstallPrompt] = useState(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -182,7 +192,9 @@ export const CalculationProvider = ({ children }) => {
       deleteSession,
       closeSession,
       theme,
-      toggleTheme
+      toggleTheme,
+      installPrompt,
+      setInstallPrompt
     }}>
       {children}
     </CalculationContext.Provider>

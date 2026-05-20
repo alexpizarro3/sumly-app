@@ -113,8 +113,7 @@ const Calculator = () => {
     <div className="calculator-container animate-in">
       <div className="mobile-top-bar">
         <button onClick={closeSession} className="back-btn" title="Volver al inicio">
-           <Home size={22} className="desktop-home-icon" />
-           <ArrowLeft size={24} className="mobile-back-icon" />
+           <Home size={22} />
         </button>
         {isEditingTitle ? (
           <div className="title-edit-mode" style={{display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--md-sys-color-surface-variant)', padding: '0.3rem 1rem', borderRadius: 'var(--radius-full)'}}>

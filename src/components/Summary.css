@@ -112,10 +112,11 @@
 }
 
 .total-amount {
-  font-size: 4rem;
+  font-size: clamp(2.5rem, 10vw, 4rem);
   font-weight: 700;
   color: var(--md-sys-color-on-background);
   letter-spacing: -0.04em;
+  word-break: break-word;
 }
 
 .summary-list h3 {
@@ -148,6 +149,8 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .item-label {
@@ -157,6 +160,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: block;
 }
 
 .item-operator-badge {

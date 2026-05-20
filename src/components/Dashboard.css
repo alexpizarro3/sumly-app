@@ -96,11 +96,20 @@ h2 {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.session-info {
+  flex: 1;
+  min-width: 0;
+  padding-right: 0.5rem;
+}
+
 .session-info h4 {
   font-size: 1.1rem;
   color: var(--md-sys-color-on-surface);
   margin-bottom: 0.3rem;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .session-info .date {

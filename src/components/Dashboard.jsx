@@ -97,49 +97,52 @@ const Dashboard = () => {
                 key={session.id} 
                 className="session-card"
                 onClick={() => loadSession(session)}
+                style={{ flexDirection: 'column', alignItems: 'stretch' }}
               >
-                <div className="session-info">
-                  <h4>{session.title || 'Sin Título'}</h4>
-                  <span className="date">
-                    {new Date(session.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="session-total">
-                  <span>${session.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                  <div style={{display: 'flex', gap: '0.2rem', marginLeft: '0.5rem', flexShrink: 0}}>
-                    <button 
-                      className="delete-session-btn"
-                      onClick={(e) => { e.stopPropagation(); handleShare(session); }}
-                      title="Compartir"
-                      style={{color: 'var(--md-sys-color-outline)', background: 'transparent'}}
-                    >
-                      <Share2 size={16} />
-                    </button>
-                    <button 
-                      className="delete-session-btn"
-                      onClick={(e) => { e.stopPropagation(); handleDownload(session); }}
-                      title="Descargar CSV"
-                      style={{color: 'var(--md-sys-color-outline)', background: 'transparent'}}
-                    >
-                      <Download size={16} />
-                    </button>
-                    <button 
-                      className="delete-session-btn"
-                      onClick={(e) => { e.stopPropagation(); handleExportToSheets(session); }}
-                      title="Google Sheets (CSV)"
-                      style={{color: 'var(--md-sys-color-secondary)', background: 'transparent'}}
-                    >
-                      <FileSpreadsheet size={16} />
-                    </button>
-                    <button 
-                      className="delete-session-btn"
-                      onClick={(e) => { e.stopPropagation(); deleteSession(session.id); }}
-                      title="Eliminar lista"
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                  <div className="session-info">
+                    <h4>{session.title || 'Sin Título'}</h4>
+                    <span className="date">
+                      {new Date(session.createdAt).toLocaleDateString()}
+                    </span>
                   </div>
-                  <ChevronRight size={18} className="chevron" />
+                  <div className="session-total">
+                    <span>${session.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: '0.4rem', marginTop: '0.75rem', alignItems: 'center' }}>
+                  <button 
+                    className="delete-session-btn"
+                    onClick={(e) => { e.stopPropagation(); handleShare(session); }}
+                    title="Compartir"
+                    style={{color: 'var(--md-sys-color-outline)', background: 'transparent'}}
+                  >
+                    <Share2 size={16} />
+                  </button>
+                  <button 
+                    className="delete-session-btn"
+                    onClick={(e) => { e.stopPropagation(); handleDownload(session); }}
+                    title="Descargar CSV"
+                    style={{color: 'var(--md-sys-color-outline)', background: 'transparent'}}
+                  >
+                    <Download size={16} />
+                  </button>
+                  <button 
+                    className="delete-session-btn"
+                    onClick={(e) => { e.stopPropagation(); handleExportToSheets(session); }}
+                    title="Google Sheets (CSV)"
+                    style={{color: 'var(--md-sys-color-secondary)', background: 'transparent'}}
+                  >
+                    <FileSpreadsheet size={16} />
+                  </button>
+                  <button 
+                    className="delete-session-btn"
+                    onClick={(e) => { e.stopPropagation(); deleteSession(session.id); }}
+                    title="Eliminar lista"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                  <ChevronRight size={18} className="chevron" style={{ marginLeft: '0.5rem' }} />
                 </div>
               </div>
             ))}

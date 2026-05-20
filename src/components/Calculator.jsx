@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useCalculation } from '../store/CalculationContext';
-import { Delete, ArrowLeft, Trash2, Check, X, Edit3, Share2, Download, FileSpreadsheet } from 'lucide-react';
+import { Delete, ArrowLeft, Trash2, Check, X, Edit3, Share2, Download, FileSpreadsheet, Home } from 'lucide-react';
 import { handleShare, handleDownload, handleExportToSheets } from '../utils/export';
 import './Calculator.css';
 
 const Calculator = () => {
-  const { currentSession, addItem, finishSession, setIsSummaryView, updateItem, removeItem, updateSessionTitle } = useCalculation();
+  const { currentSession, addItem, finishSession, setIsSummaryView, updateItem, removeItem, updateSessionTitle, closeSession } = useCalculation();
   const [currentAmount, setCurrentAmount] = useState('0');
   const [currentLabel, setCurrentLabel] = useState('');
   const labelInputRef = useRef(null);
@@ -112,8 +112,9 @@ const Calculator = () => {
   return (
     <div className="calculator-container animate-in">
       <div className="mobile-top-bar">
-        <button onClick={() => window.location.reload()} className="back-btn">
-           <ArrowLeft size={24} />
+        <button onClick={closeSession} className="back-btn" title="Volver al inicio">
+           <Home size={22} className="desktop-home-icon" />
+           <ArrowLeft size={24} className="mobile-back-icon" />
         </button>
         {isEditingTitle ? (
           <div className="title-edit-mode" style={{display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--md-sys-color-surface-variant)', padding: '0.3rem 1rem', borderRadius: 'var(--radius-full)'}}>

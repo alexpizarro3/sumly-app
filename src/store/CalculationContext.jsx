@@ -161,6 +161,11 @@ export const CalculationProvider = ({ children }) => {
     loadSessions();
   };
 
+  const closeSession = () => {
+    setCurrentSession(null);
+    setIsSummaryView(false);
+  };
+
   return (
     <CalculationContext.Provider value={{
       sessions,
@@ -175,6 +180,7 @@ export const CalculationProvider = ({ children }) => {
       removeItem,
       updateItem,
       deleteSession,
+      closeSession,
       theme,
       toggleTheme
     }}>

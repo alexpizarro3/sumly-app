@@ -82,21 +82,6 @@ export const handleDownload = async (session, currency) => {
     await saveFileNatively(filename, text);
     return;
   }
-
-  if (window.showSaveFilePicker) {
-    try {
-      const handle = await window.showSaveFilePicker({
-        suggestedName: filename,
-        types: [{ description: 'Text File', accept: {'text/plain': ['.txt']} }],
-      });
-      const writable = await handle.createWritable();
-      await writable.write(text);
-      await writable.close();
-      return;
-    } catch (err) {
-      return;
-    }
-  }
   
   const file = new File([text], filename, { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(file);
@@ -166,21 +151,6 @@ export const handleExportToSheets = async (session, currency) => {
   if (Capacitor.isNativePlatform()) {
     await saveFileNatively(filename, csv);
     return;
-  }
-
-  if (window.showSaveFilePicker) {
-    try {
-      const handle = await window.showSaveFilePicker({
-        suggestedName: filename,
-        types: [{ description: 'CSV File', accept: {'text/csv': ['.csv']} }],
-      });
-      const writable = await handle.createWritable();
-      await writable.write(csv);
-      await writable.close();
-      return;
-    } catch (err) {
-      return;
-    }
   }
   
   const file = new File([csv], filename, { type: 'text/csv;charset=utf-8;' });

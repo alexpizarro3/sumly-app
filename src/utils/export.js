@@ -1,5 +1,6 @@
 import { Capacitor } from '@capacitor/core';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { getCurrencySymbol } from './currency';
@@ -21,6 +22,19 @@ export const formatReceiptText = (session, currency = 'MXN') => {
 export const handleShare = async (session, currency) => {
   if (!session) return;
   const text = formatReceiptText(session, currency);
+  
+  if (Capacitor.isNativePlatform()) {
+    try {
+      await Share.share({
+        title: session.title || 'Mi lista en Sumly',
+        text: text,
+        dialogTitle: 'Compartir resumen'
+      });
+      return;
+    } catch (e) {
+      console.error('Error sharing natively', e);
+    }
+  }
   
   if (navigator.share && window.isSecureContext) {
     try {
@@ -53,19 +67,31 @@ export const handleShare = async (session, currency) => {
   }
 };
 
-const saveFileNatively = async (filename, data) => {
+const shareFileNatively = async (filename, data, isBase64 = false) => {
   try {
-    await Filesystem.writeFile({
+    const writeOptions = {
       path: filename,
       data: data,
-      directory: Directory.Documents,
+      directory: Directory.Cache, // Se guarda en caché para compartir rápido
       recursive: true
+    };
+    
+    // Mantenemos la corrección vital de codificación para TXT y CSV
+    if (!isBase64) {
+      writeOptions.encoding = Encoding.UTF8;
+    }
+
+    const result = await Filesystem.writeFile(writeOptions);
+    
+    await Share.share({
+      title: filename,
+      url: result.uri,
+      dialogTitle: 'Guardar o Compartir archivo'
     });
-    alert(`Archivo guardado en Documentos:\n${filename}`);
     return true;
   } catch (e) {
-    console.error('Error saving file natively', e);
-    alert('Error guardando el archivo. Revisa los permisos de almacenamiento.');
+    console.error('Error sharing file natively', e);
+    alert('Error al procesar el archivo. Revisa los permisos de la aplicación.');
     return false;
   }
 };
@@ -79,7 +105,7 @@ export const handleDownload = async (session, currency) => {
   const filename = `Sumly_${cleanTitle}.txt`;
 
   if (Capacitor.isNativePlatform()) {
-    await saveFileNatively(filename, text);
+    await shareFileNatively(filename, text, false);
     return;
   }
   
@@ -128,7 +154,7 @@ export const handleExportToPDF = async (session, currency) => {
 
   if (Capacitor.isNativePlatform()) {
     const base64Out = doc.output('datauristring').split(',')[1];
-    await saveFileNatively(filename, base64Out); // datauristring base64
+    await shareFileNatively(filename, base64Out, true);
   } else {
     doc.save(filename);
   }
@@ -149,7 +175,7 @@ export const handleExportToSheets = async (session, currency) => {
   const filename = `Sumly_${cleanTitle}_Sheets.csv`;
 
   if (Capacitor.isNativePlatform()) {
-    await saveFileNatively(filename, csv);
+    await shareFileNatively(filename, csv, false);
     return;
   }
   

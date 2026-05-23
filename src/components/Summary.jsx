@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useCalculation } from '../store/CalculationContext';
-import { ArrowLeft, Edit3, Check, Share2, FileDown, Trash2, X, FileSpreadsheet } from 'lucide-react';
-import { handleShare, handleDownload, handleExportToSheets } from '../utils/export';
+import { ArrowLeft, Edit3, Check, Share2, FileDown, Trash2, X, FileSpreadsheet, FileText } from 'lucide-react';
+import { handleShare, handleDownload, handleExportToSheets, handleExportToPDF } from '../utils/export';
+import { getCurrencySymbol } from '../utils/currency';
 import './Summary.css';
 
 const Summary = () => {
-  const { currentSession, setIsSummaryView, updateSessionTitle, updateItem, removeItem } = useCalculation();
+  const { currentSession, setIsSummaryView, updateSessionTitle, updateItem, removeItem, currency } = useCalculation();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [tempTitle, setTempTitle] = useState(currentSession?.title || '');
   
@@ -44,9 +45,10 @@ const Summary = () => {
           <ArrowLeft size={24} />
         </button>
         <div className="header-actions">
-          <button className="icon-btn" title="Compartir texto" onClick={() => handleShare(currentSession)}><Share2 size={20} /></button>
-          <button className="icon-btn" title="Descargar TXT" onClick={() => handleDownload(currentSession)}><FileDown size={20} /></button>
-          <button className="icon-btn" title="Google Sheets (CSV)" onClick={() => handleExportToSheets(currentSession)} style={{color: 'var(--md-sys-color-secondary)'}}><FileSpreadsheet size={20} /></button>
+          <button className="icon-btn" title="Compartir texto" onClick={() => handleShare(currentSession, currency)}><Share2 size={20} /></button>
+          <button className="icon-btn" title="Descargar TXT" onClick={() => handleDownload(currentSession, currency)}><FileDown size={20} /></button>
+          <button className="icon-btn" title="Descargar PDF" onClick={() => handleExportToPDF(currentSession, currency)} style={{color: 'var(--md-sys-color-error)'}}><FileText size={20} /></button>
+          <button className="icon-btn" title="Google Sheets (CSV)" onClick={() => handleExportToSheets(currentSession, currency)} style={{color: 'var(--md-sys-color-secondary)'}}><FileSpreadsheet size={20} /></button>
         </div>
       </div>
 
@@ -77,7 +79,7 @@ const Summary = () => {
       <div className="summary-total-card glass">
         <h2>Total</h2>
         <div className="total-amount">
-          ${currentSession?.total?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          {getCurrencySymbol(currency)}{currentSession?.total?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </div>
       </div>
 
@@ -120,7 +122,7 @@ const Summary = () => {
                   </div>
                   <div className="item-amount" style={{display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0}}>
                     <span onClick={() => startEditingItem(item, 'amount')} style={{cursor: 'pointer'}} title="Editar">
-                      ${item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      {getCurrencySymbol(currency)}{item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                     <div style={{display: 'flex', gap: '0.2rem', marginLeft: '0.5rem'}}>
                       <button onClick={() => startEditingItem(item, 'label')} style={{color: 'var(--md-sys-color-outline)', padding: '0.2rem'}}><Edit3 size={16}/></button>

@@ -1,13 +1,16 @@
 import React from 'react';
 import { useCalculation } from '../store/CalculationContext';
-import { Plus, ListTodo, ChevronRight, Search, Trash2, Share2, FileDown, FileSpreadsheet, Sun, Moon, Smartphone } from 'lucide-react';
-import { handleShare, handleDownload, handleExportToSheets } from '../utils/export';
+import { Plus, ListTodo, ChevronRight, Search, Trash2, Share2, FileDown, FileSpreadsheet, FileText, Sun, Moon, Smartphone } from 'lucide-react';
+import { handleShare, handleDownload, handleExportToSheets, handleExportToPDF } from '../utils/export';
+import { getCurrencySymbol } from '../utils/currency';
+import CurrencyDropdown from './CurrencyDropdown';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const { 
     sessions, startNewSession, loadSession, deleteSession,
-    theme, toggleTheme, installPrompt, setInstallPrompt
+    theme, toggleTheme, installPrompt, setInstallPrompt,
+    currency, setCurrency
   } = useCalculation();
   const [searchTerm, setSearchTerm] = React.useState('');
 
@@ -26,29 +29,34 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container animate-in">
-      <div className="dashboard-header" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+      <div className="dashboard-header" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
           <div className="logo-icon"><ListTodo size={24} /></div>
           <h2>Sumly</h2>
         </div>
-        <div style={{display: 'flex', gap: '0.5rem'}}>
+        <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
           {installPrompt && (
             <button onClick={handleInstallClick} className="install-btn" title="Instalar App" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--md-sys-color-secondary-container)', color: 'var(--md-sys-color-on-secondary-container)', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontWeight: 600, fontSize: '0.9rem', boxShadow: 'var(--elevation-1)', border: 'none', cursor: 'pointer' }}>
               <Smartphone size={18} />
               <span className="install-text">Instalar</span>
             </button>
           )}
+          <CurrencyDropdown />
           <button onClick={toggleTheme} className="icon-btn" title="Cambiar tema" style={{color: 'var(--md-sys-color-on-surface)', background: 'transparent', padding: '0.5rem', borderRadius: '50%'}}>
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-          <button className="new-btn" onClick={() => startNewSession()}>
-            <Plus size={20} />
-            <span>Nueva</span>
           </button>
         </div>
       </div>
 
       <div className="dashboard-content">
+        <button 
+          className="new-btn" 
+          onClick={() => startNewSession()} 
+          style={{width: '100%', justifyContent: 'center', marginBottom: '1.5rem', padding: '0.8rem', fontSize: '1.05rem'}}
+        >
+          <Plus size={22} />
+          <span>Nueva Lista</span>
+        </button>
         <div className="dashboard-content-header" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem'}}>
           <h3 className="section-title" style={{margin: 0}}>Listas Guardadas</h3>
           <div className="search-bar" style={{display: 'flex', alignItems: 'center', background: 'var(--md-sys-color-surface-variant)', padding: '0.6rem 1.2rem', borderRadius: 'var(--radius-full)'}}>
@@ -98,13 +106,13 @@ const Dashboard = () => {
                     </span>
                   </div>
                   <div className="session-total">
-                    <span>${session.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span>{getCurrencySymbol(currency)}{session.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: '0.4rem', marginTop: '0.75rem', alignItems: 'center' }}>
                   <button 
                     className="delete-session-btn"
-                    onClick={(e) => { e.stopPropagation(); handleShare(session); }}
+                    onClick={(e) => { e.stopPropagation(); handleShare(session, currency); }}
                     title="Compartir"
                     style={{color: 'var(--md-sys-color-outline)', background: 'transparent'}}
                   >
@@ -112,15 +120,23 @@ const Dashboard = () => {
                   </button>
                   <button 
                     className="delete-session-btn"
-                    onClick={(e) => { e.stopPropagation(); handleDownload(session); }}
-                    title="Descargar CSV"
+                    onClick={(e) => { e.stopPropagation(); handleDownload(session, currency); }}
+                    title="Descargar TXT"
                     style={{color: 'var(--md-sys-color-outline)', background: 'transparent'}}
                   >
                     <FileDown size={16} />
                   </button>
                   <button 
                     className="delete-session-btn"
-                    onClick={(e) => { e.stopPropagation(); handleExportToSheets(session); }}
+                    onClick={(e) => { e.stopPropagation(); handleExportToPDF(session, currency); }}
+                    title="Descargar PDF"
+                    style={{color: 'var(--md-sys-color-error)', background: 'transparent'}}
+                  >
+                    <FileText size={16} />
+                  </button>
+                  <button 
+                    className="delete-session-btn"
+                    onClick={(e) => { e.stopPropagation(); handleExportToSheets(session, currency); }}
                     title="Google Sheets (CSV)"
                     style={{color: 'var(--md-sys-color-secondary)', background: 'transparent'}}
                   >

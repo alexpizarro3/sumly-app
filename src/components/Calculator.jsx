@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useCalculation } from '../store/CalculationContext';
-import { Delete, ArrowLeft, Trash2, Check, X, Edit3, Share2, FileDown, FileSpreadsheet, Home } from 'lucide-react';
-import { handleShare, handleDownload, handleExportToSheets } from '../utils/export';
+import { Delete, ArrowLeft, Trash2, Check, X, Edit3, Share2, FileDown, FileSpreadsheet, FileText, Home } from 'lucide-react';
+import { handleShare, handleDownload, handleExportToSheets, handleExportToPDF } from '../utils/export';
+import { getCurrencySymbol } from '../utils/currency';
 import './Calculator.css';
 
 const Calculator = () => {
-  const { currentSession, addItem, finishSession, setIsSummaryView, updateItem, removeItem, updateSessionTitle, closeSession } = useCalculation();
+  const { currentSession, addItem, finishSession, setIsSummaryView, updateItem, removeItem, updateSessionTitle, closeSession, currency } = useCalculation();
   const [currentAmount, setCurrentAmount] = useState('0');
   const [currentLabel, setCurrentLabel] = useState('');
   const labelInputRef = useRef(null);
@@ -141,9 +142,10 @@ const Calculator = () => {
           </div>
         )}
         <div style={{display: 'flex', gap: '0.2rem'}}>
-          <button onClick={() => handleShare(currentSession)} style={{color: 'var(--md-sys-color-on-background)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Compartir"><Share2 size={18} /></button>
-          <button onClick={() => handleDownload(currentSession)} style={{color: 'var(--md-sys-color-on-background)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Descargar TXT"><FileDown size={18} /></button>
-          <button onClick={() => handleExportToSheets(currentSession)} style={{color: 'var(--md-sys-color-secondary)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Google Sheets (CSV)"><FileSpreadsheet size={18} /></button>
+          <button onClick={() => handleShare(currentSession, currency)} style={{color: 'var(--md-sys-color-on-background)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Compartir"><Share2 size={18} /></button>
+          <button onClick={() => handleDownload(currentSession, currency)} style={{color: 'var(--md-sys-color-on-background)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Descargar TXT"><FileDown size={18} /></button>
+          <button onClick={() => handleExportToPDF(currentSession, currency)} style={{color: 'var(--md-sys-color-error)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Descargar PDF"><FileText size={18} /></button>
+          <button onClick={() => handleExportToSheets(currentSession, currency)} style={{color: 'var(--md-sys-color-secondary)', padding: '0.5rem', borderRadius: '50%', background: 'rgba(128, 128, 128, 0.1)'}} title="Google Sheets (CSV)"><FileSpreadsheet size={18} /></button>
         </div>
       </div>
 
@@ -180,7 +182,7 @@ const Calculator = () => {
                 <>
                   <span className="operator">{item.operator !== 'start' ? item.operator : ''}</span>
                   <span className="label" onClick={() => startEditingItem(item, 'label')} style={{cursor: 'pointer'}} title="Clic para editar">{item.label}</span>
-                  <span className="amount" onClick={() => startEditingItem(item, 'amount')} style={{cursor: 'pointer'}} title="Clic para editar">${item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  <span className="amount" onClick={() => startEditingItem(item, 'amount')} style={{cursor: 'pointer'}} title="Clic para editar">{getCurrencySymbol(currency)}{item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   <button onClick={() => removeItem(item.id)} style={{color: 'var(--md-sys-color-error)', padding: '0.2rem', marginLeft: '0.5rem', flexShrink: 0}} title="Eliminar"><Trash2 size={16}/></button>
                 </>
               )}
@@ -192,7 +194,7 @@ const Calculator = () => {
           <div ref={auditEndRef} />
         </div>
         <div className="running-total">
-          Total: ${currentSession?.total?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '0.00'}
+          Total: {getCurrencySymbol(currency)}{currentSession?.total?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '0.00'}
         </div>
       </div>
 
@@ -204,7 +206,7 @@ const Calculator = () => {
               {pendingOperator}
             </span>
           )}
-          <span className="currency">$</span>
+          <span className="currency">{getCurrencySymbol(currency)}</span>
           <span className="value">{currentAmount}</span>
         </div>
         <input 

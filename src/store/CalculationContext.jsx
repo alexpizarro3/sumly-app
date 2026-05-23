@@ -19,7 +19,22 @@ export const CalculationProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark';
   });
+  const [currency, setCurrency] = useState(() => {
+    return localStorage.getItem('currency') || 'MXN';
+  });
+  const [isPremium, setIsPremium] = useState(() => {
+    return localStorage.getItem('isPremium') === 'true';
+  });
+  const [showPaywall, setShowPaywall] = useState(false);
   const [installPrompt, setInstallPrompt] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem('currency', currency);
+  }, [currency]);
+
+  useEffect(() => {
+    localStorage.setItem('isPremium', isPremium);
+  }, [isPremium]);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
@@ -50,6 +65,10 @@ export const CalculationProvider = ({ children }) => {
   };
 
   const startNewSession = (title = "Nueva Lista") => {
+    if (!isPremium && sessions.length >= 3) {
+      setShowPaywall(true);
+      return;
+    }
     const newSession = {
       id: generateId(),
       title,
@@ -63,6 +82,10 @@ export const CalculationProvider = ({ children }) => {
 
   const addItem = async (amount, label, operator) => {
     if (!currentSession) {
+      if (!isPremium && sessions.length >= 3) {
+        setShowPaywall(true);
+        return;
+      }
       // If no session exists, start one implicitly
       const newSession = {
         id: generateId(),
@@ -193,6 +216,12 @@ export const CalculationProvider = ({ children }) => {
       closeSession,
       theme,
       toggleTheme,
+      currency,
+      setCurrency,
+      isPremium,
+      setIsPremium,
+      showPaywall,
+      setShowPaywall,
       installPrompt,
       setInstallPrompt
     }}>

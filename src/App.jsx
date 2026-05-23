@@ -3,6 +3,7 @@ import { CalculationProvider, useCalculation } from './store/CalculationContext'
 import Calculator from './components/Calculator';
 import Dashboard from './components/Dashboard';
 import Summary from './components/Summary';
+import PaywallModal from './components/PaywallModal';
 import './App.css';
 
 const DesktopEmptyState = () => {
@@ -65,6 +66,7 @@ const AppContent = () => {
       <aside className="desktop-sidebar glass">
         <Dashboard />
       </aside>
+      <PaywallModal />
     </div>
   );
 };
